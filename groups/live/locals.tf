@@ -21,16 +21,6 @@ locals {
   jfil_cw_logs    = { for log, map in var.jfil_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${log}" }) }
   jfil_log_groups = compact([for log, map in local.jfil_cw_logs : lookup(map, "log_group_name", "")])
 
-  # ------------------------------------------------------------------------------
-  # jfil Server Security Group Variables
-  # ------------------------------------------------------------------------------
-
-  # TODO: any SG ingress required??
-  #  jfil_80_cidr_block = [
-  #    "172.18.0.0/16",
-  #    "172.19.0.0/17",
-  #    "172.23.0.0/16"
-  #  ]
 
 
 }

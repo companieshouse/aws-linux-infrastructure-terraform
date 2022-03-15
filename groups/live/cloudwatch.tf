@@ -1,5 +1,3 @@
-# TODO: confirm with on-prem as to what logs need picking up
-
 resource "aws_cloudwatch_log_group" "jfil" {
   for_each = local.jfil_cw_logs
 
