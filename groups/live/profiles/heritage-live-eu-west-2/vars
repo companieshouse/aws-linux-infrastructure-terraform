@@ -13,7 +13,7 @@ environment = "live"
 # Jfil Server
 jfil_application       = "Jfil Server"
 jfil_ec2_name          = "jfil-app"
-jfil_ec2_instance_type = "t2.xlarge"
+jfil_ec2_instance_type = "m4.xlarge"
 jfil_ami               = "ami-027676865ead3918d" # rhel6-base-0.1.25
 
 jfil_cw_logs = {
