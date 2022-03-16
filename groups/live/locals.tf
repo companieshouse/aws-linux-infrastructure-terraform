@@ -18,7 +18,7 @@ locals {
   # ------------------------------------------------------------------------------
 
   #For each log map passed, add an extra kv for the log group name
-  jfil_cw_logs    = { for log, map in var.jfil_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${log}" }) }
+  jfil_cw_logs    = { for log, map in var.jfil_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${var.jfil_ec2_name}-${log}" }) }
   jfil_log_groups = compact([for log, map in local.jfil_cw_logs : lookup(map, "log_group_name", "")])
 
 
