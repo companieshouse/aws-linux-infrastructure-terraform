@@ -1,2 +1,3 @@
 # aws-linux-infrastructure-terraform
-Linux server Terraform infrastructure
+
+This repo contains the underlying infrastructure for the Linux servers migrated to Heritage AWS accounts.
