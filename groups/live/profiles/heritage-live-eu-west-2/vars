@@ -46,5 +46,9 @@ jfil_cw_logs = {
     file_path = "/var/log/amazon/ssm"
     log_group_retention = 30
   }
-}
 
+  "qia" = {
+    file_path = "/data/chjf/uraocr/run_*.log"
+    log_group_retention = 30
+  }
+}

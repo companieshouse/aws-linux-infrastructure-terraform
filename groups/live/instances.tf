@@ -30,7 +30,7 @@ module "jfil_instance" {
       "Name", var.jfil_ec2_name,
       "Application", var.jfil_application,
       "ServiceTeam", var.ServiceTeam,
-      "Backup", "backup21"
+      "Backup", "true" # 7 day retention only as logs are shipped and files stored on NetApp volumes
     )
   )
 }
