@@ -38,14 +38,6 @@ data "vault_generic_secret" "account_ids" {
   path = "aws-accounts/account-ids"
 }
 
-
-# ------------------------------------------------------------------------------
-# jfil Data Sources
-# ------------------------------------------------------------------------------
-data "vault_generic_secret" "jfil_ec2_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/${var.category}/jfil/ec2"
-}
-
 # ------------------------------------------------------------------------------
 # Bulk Gateway
 # ------------------------------------------------------------------------------
