@@ -45,6 +45,7 @@ module "bulk_gateway_instance_profile" {
 
   kms_key_refs = [
     "alias/${var.account}/${var.region}/ebs",
+    "alias/kms-bulk-gateway-${var.environment}-sftp",
     local.ssm_kms_key_id
   ]
   s3_buckets_write = [local.session_manager_bucket_name]
