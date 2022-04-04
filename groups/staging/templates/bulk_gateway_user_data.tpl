@@ -76,7 +76,7 @@ chmod 777 /batenvp1rep/archive
 chown batenvp1rep:batch /batenvp1rep/archive
 
 #Copy /etc/fstab share info from vault
-cat <<EOF >> /ec2/fstab
+cat <<EOF >> /etc/fstab
 ${BULK_GATEWAY_INPUTS}
 EOF
 
