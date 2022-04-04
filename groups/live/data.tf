@@ -51,11 +51,11 @@ data "vault_generic_secret" "jfil_ec2_data" {
 # ------------------------------------------------------------------------------
 
 data "vault_generic_secret" "bulk_gateway_ec2_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/${var.category}/bulk_gateway/ec2"
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/ec2"
 }
 
 data "vault_generic_secret" "bulk_gateway_shares_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/${var.category}/bulk_gateway/shares"
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/shares"
 }
 
 data "aws_ami" "bulk_gateway" {
