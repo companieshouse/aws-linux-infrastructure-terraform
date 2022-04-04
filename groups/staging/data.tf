@@ -43,7 +43,11 @@ data "vault_generic_secret" "account_ids" {
 # ------------------------------------------------------------------------------
 
 data "vault_generic_secret" "bulk_gateway_ec2_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/${var.category}/bulk_gateway/ec2"
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/ec2"
+}
+
+data "vault_generic_secret" "bulk_gateway_shares_data" {
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/shares"
 }
 
 data "aws_ami" "bulk_gateway" {
@@ -72,6 +76,7 @@ data "template_file" "bulk_gateway_userdata" {
     REGION               = var.aws_region
     ANSIBLE_INPUTS       = jsonencode(local.bulk_gateway_ansible_inputs)
     HERITAGE_ENVIRONMENT = title(var.environment)
+    BULK_GATEWAY_INPUTS  = local.bulk_gateway_shares_data["share-mounts"]
   }
 }
 
