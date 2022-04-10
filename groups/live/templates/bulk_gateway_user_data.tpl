@@ -121,6 +121,19 @@ mkdir -p /home/gateway/bin/lfp_sage_files
 chmod 775 /home/gateway/bin/lfp_sage_files
 chown gateway:gateway /home/gateway/bin/lfp_sage_files
 
+#Script that copies deployment scripts from Git repo
+touch /root/script_deploy.sh
+chmod 755 /root/script_deploy.sh
+echo '#!/bin/bash' > /root/script_deploy.sh
+echo '#Script to clone deploy scripts from Git repo and copy to various locations' >> /root/script_deploy.sh
+echo 'pushd /tmp' >> /root/script_deploy.sh
+echo 'git clone git@github.com:companieshouse/chips-service-admin.git' >> /root/script_deploy.sh
+echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gateway/* /home/bulk-live/bin/' >> /root/script_deploy.sh
+echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gazette/* /home/gateway/bin/gazette/' >> /root/script_deploy.sh
+echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/letters/* /home/gateway/bin/letters/' >> /root/script_deploy.sh
+echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/returnedmail/* /home/gateway/bin/returnedmail/' >> /root/script_deploy.sh
+echo 'rm -rf /tmp/chips-service-admin' >> /root/script_deploy.sh
+
 #Copy /etc/fstab share info from vault
 cat <<EOF >> /etc/fstab
 ${BULK_GATEWAY_INPUTS}
