@@ -124,15 +124,29 @@ chown gateway:gateway /home/gateway/bin/lfp_sage_files
 #Script that copies deployment scripts from Git repo
 touch /root/script_deploy.sh
 chmod 755 /root/script_deploy.sh
-echo '#!/bin/bash' > /root/script_deploy.sh
-echo '#Script to clone deploy scripts from Git repo and copy to various locations' >> /root/script_deploy.sh
-echo 'pushd /tmp' >> /root/script_deploy.sh
-echo 'git clone git@github.com:companieshouse/chips-service-admin.git' >> /root/script_deploy.sh
-echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gateway/* /home/bulk-live/bin/' >> /root/script_deploy.sh
-echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gazette/* /home/gateway/bin/gazette/' >> /root/script_deploy.sh
-echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/letters/* /home/gateway/bin/letters/' >> /root/script_deploy.sh
-echo 'cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/returnedmail/* /home/gateway/bin/returnedmail/' >> /root/script_deploy.sh
-echo 'rm -rf /tmp/chips-service-admin' >> /root/script_deploy.sh
+cat <<EOF >> /root/script_deploy.sh
+#!/bin/bash
+#Script to clone deploy scripts from GitHub repo and copy to various locations
+
+#Clone from GitHub repo
+pushd /tmp
+git clone git@github.com:companieshouse/chips-service-admin.git
+
+#Copy script to relevant paths
+cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gateway/* /home/bulk-live/bin/
+cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gazette/* /home/gateway/bin/gazette/
+cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/letters/* /home/gateway/bin/letters/
+cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/returnedmail/* /home/gateway/bin/returnedmail/
+
+#Update ownership after scripts deployment
+chown -R bulk-live:bulk-live /home/bulk-live/bin/
+chown -R gateway:gateway /home/gateway/bin/gazette/
+chown -R gateway:gateway /home/gateway/bin/letters/
+chown -R gateway:gateway /home/gateway/bin/returnedmail/
+
+#Remove cloned GitHub repo
+rm -rf /tmp/chips-service-admin
+EOF
 
 #Copy /etc/fstab share info from vault
 cat <<EOF >> /etc/fstab
