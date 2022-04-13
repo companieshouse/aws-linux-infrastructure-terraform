@@ -42,7 +42,7 @@ module "bulk_gateway_ec2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "2.19.0"
 
-  name = var.bulk_gateway_ec2_name
+  name = var.bulk_gateway_application
 
   ami                    = data.aws_ami.bulk_gateway.id
   instance_type          = var.bulk_gateway_ec2_instance_type
@@ -68,7 +68,7 @@ module "bulk_gateway_ec2" {
   tags = merge(
     local.default_tags,
     map(
-      "Name", var.bulk_gateway_ec2_name,
+      "Name", var.bulk_gateway_application,
       "Application", var.bulk_gateway_application,
       "ServiceTeam", var.ServiceTeam,
       "Backup", var.bulk_gateway_bck_retention_days
@@ -78,7 +78,7 @@ module "bulk_gateway_ec2" {
   volume_tags = merge(
     local.default_tags,
     map(
-      "Name", var.bulk_gateway_ec2_name,
+      "Name", var.bulk_gateway_application,
       "Application", var.bulk_gateway_application,
       "ServiceTeam", var.ServiceTeam,
       "Backup", var.bulk_gateway_bck_retention_days

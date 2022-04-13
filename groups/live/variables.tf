@@ -152,11 +152,6 @@ variable "bulk_gateway_application" {
   type        = string
 }
 
-variable "bulk_gateway_ec2_name" {
-  description = "EC2 instance name"
-  type        = string
-}
-
 variable "bulk_gateway_ec2_instance_type" {
   type        = string
   description = "The size of the EC2 instance"
@@ -176,4 +171,15 @@ variable "bulk_gateway_cw_logs" {
 variable "bulk_gateway_bck_retention_days" {
   type        = string
   description = "The number of retention days after which backups will be deleted"
+}
+
+variable "bulk_gateway_instance_count" {
+  type        = string
+  description = "The number of ec2 instances to create"
+}
+
+variable "cloudwatch_namespace" {
+  type        = string
+  default     = null
+  description = "A custom namespace to define for CloudWatch custom metrics such as CPU"
 }

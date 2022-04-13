@@ -97,3 +97,7 @@ data "template_cloudinit_config" "bulk_gateway_userdata_config" {
     content      = data.template_file.bulk_gateway_userdata.rendered
   }
 }
+
+data "aws_sns_topic" "bulk_gateway_sns" {
+  name = "bulk-gateway-sftp-cloudwatch-20220325131737971800000002"
+}
