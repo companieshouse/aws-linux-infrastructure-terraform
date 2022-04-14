@@ -16,7 +16,7 @@ bulk_gateway_ec2_instance_type  = "m5.large"
 bulk_gateway_ami                = "amzn2-base-*"
 bulk_gateway_instance_count     = 1
 bulk_gateway_bck_retention_days = "backup14"
-cloudwatch_namespace            = "BULKGATEWAY"
+cloudwatch_namespace            = "CUSTOM/SFTP"
 
 bulk_gateway_cw_logs = {
   "audit.log" = {
