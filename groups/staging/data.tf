@@ -43,11 +43,11 @@ data "vault_generic_secret" "account_ids" {
 # ------------------------------------------------------------------------------
 
 data "vault_generic_secret" "bulk_gateway_ec2_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/ec2"
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/ec2"
 }
 
 data "vault_generic_secret" "bulk_gateway_shares_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/shares"
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/shares"
 }
 
 data "aws_ami" "bulk_gateway" {

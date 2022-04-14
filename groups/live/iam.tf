@@ -27,7 +27,7 @@ module "jfil_instance_profile" {
 module "bulk_gateway_instance_profile" {
   source = "git@github.com:companieshouse/terraform-modules//aws/instance_profile?ref=tags/1.0.59"
 
-  name       = "${var.bulk_gateway_ec2_name}-profile"
+  name       = "${var.bulk_gateway_application}-profile"
   enable_SSM = true
   cw_log_group_arns = length(local.bulk_gateway_log_groups) > 0 ? flatten([
     formatlist(
@@ -85,6 +85,14 @@ module "bulk_gateway_instance_profile" {
         "s3:ListBucket",
         "s3:GetObject",
         "s3:GetObjectAcl",
+      ]
+    },
+    {
+      sid       = "CloudwatchMetrics"
+      effect    = "Allow"
+      resources = ["*"]
+      actions = [
+        "cloudwatch:PutMetricData"
       ]
     }
   ]

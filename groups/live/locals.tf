@@ -29,7 +29,7 @@ locals {
   bulk_gateway_shares_data = data.vault_generic_secret.bulk_gateway_shares_data.data
 
   #For each log map passed, add an extra kv for the log group name
-  bulk_gateway_cw_logs    = { for log, map in var.bulk_gateway_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${var.bulk_gateway_ec2_name}-${log}" }) }
+  bulk_gateway_cw_logs    = { for log, map in var.bulk_gateway_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${var.bulk_gateway_application}-${log}" }) }
   bulk_gateway_log_groups = compact([for log, map in local.bulk_gateway_cw_logs : lookup(map, "log_group_name", "")])
 
   bulk_gateway_ansible_inputs = {
