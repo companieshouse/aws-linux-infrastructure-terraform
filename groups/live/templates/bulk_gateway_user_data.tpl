@@ -155,3 +155,11 @@ EOF
 
 #Mount shares
 mount -a
+
+#Install Malix
+yum install -y mailx
+
+#Configure postfix to use AWS Shared Services mail relay
+sed -i 's/#mydomain = domain.tld/mydomain = companieshouse.gov.uk/g' /etc/postfix/main.cf
+sed -i 's/#relayhost = $mydomain/relayhost = smtp-outbound.sharedservices.aws.internal/g' /etc/postfix/main.cf
+systemctl restart postfix
