@@ -31,3 +31,6 @@ override.tf.json
 
 # IDE's
 .idea
+
+# Ignore .DS_Store file
+.DS_Store

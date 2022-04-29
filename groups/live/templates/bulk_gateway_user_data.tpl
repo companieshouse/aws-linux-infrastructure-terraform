@@ -163,3 +163,6 @@ yum install -y mailx
 sed -i 's/#mydomain = domain.tld/mydomain = companieshouse.gov.uk/g' /etc/postfix/main.cf
 sed -i 's/#relayhost = $mydomain/relayhost = smtp-outbound.sharedservices.aws.internal/g' /etc/postfix/main.cf
 systemctl restart postfix
+
+#Allow user to use cron
+echo bulk-live >> /etc/cron.allow
