@@ -166,3 +166,4 @@ systemctl restart postfix
 
 #Allow user to use cron
 echo bulk-staging >> /etc/cron.allow
+echo bulk-gateway >> /etc/cron.allow
