@@ -121,6 +121,13 @@ mkdir -p /home/gateway/bin/lfp_sage_files
 chmod 775 /home/gateway/bin/lfp_sage_files
 chown gateway:gateway /home/gateway/bin/lfp_sage_files
 
+#Copy Github deploy key from vault
+touch /root/.ssh/id_ed25519
+chmod 600 /root/.ssh/id_ed25519
+cat <<EOF >> /root/.ssh/id_ed25519
+${GITHUB_DEPLOY_KEY}
+EOF
+
 #Script that copies deployment scripts from Git repo
 touch /root/script_deploy.sh
 chmod 755 /root/script_deploy.sh
@@ -144,6 +151,12 @@ chown -R gateway:gateway /home/gateway/bin/gazette/
 chown -R gateway:gateway /home/gateway/bin/letters/
 chown -R gateway:gateway /home/gateway/bin/returnedmail/
 
+#Copy crontabs
+cp -p /tmp/chips-service-admin/scripts/bulk-outputs/crontab-bulk-staging /var/spool/cron/bulk-live
+chown bulk-live:bulk-live /var/spool/cron/bulk-live
+cp -p /tmp/chips-service-admin/scripts/bulk-outputs/crontab-gateway-staging /var/spool/cron/gateway
+chown gateway:gateway /var/spool/cron/gateway
+
 #Remove cloned GitHub repo
 rm -rf /tmp/chips-service-admin
 EOF
@@ -165,5 +178,36 @@ sed -i 's/#relayhost = $mydomain/relayhost = smtp-outbound.sharedservices.aws.in
 systemctl restart postfix
 
 #Allow user to use cron
+echo bulk-live >> /etc/cron.allow
 echo bulk-staging >> /etc/cron.allow
-echo bulk-gateway >> /etc/cron.allow
+echo gateway >> /etc/cron.allow
+
+#Change shell prompt variable
+sh -c 'echo "export NICKNAME=bulk-gateway-staging" > /etc/profile.d/prompt.sh'
+sed -i 's/@\\h/@$NICKNAME/g' /etc/bashrc
+
+#Setup SSH keys
+touch /home/gateway/.ssh/id_e5ftp_rsa
+touch /home/gateway/.ssh/id_e5ftp_rsa.pub
+touch /home/gateway/.ssh/id_rsa
+touch /home/gateway/.ssh/id_rsa.pub
+chown gateway:gateway /home/gateway/.ssh/id_e5ftp_rsa
+chown gateway:gateway /home/gateway/.ssh/id_e5ftp_rsa.pub
+chown gateway:gateway /home/gateway/.ssh/id_rsa
+chown gateway:gateway /home/gateway/.ssh/id_rsa.pub
+chmod 600 /home/gateway/.ssh/id_e5ftp_rsa
+chmod 600 /home/gateway/.ssh/id_e5ftp_rsa.pub
+chmod 600 /home/gateway/.ssh/id_rsa
+chmod 600 /home/gateway/.ssh/id_rsa.pub
+cat <<EOF >> /home/gateway/.ssh/id_e5ftp_rsa
+${E5_SSH_KEY}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_e5ftp_rsa.pub
+${E5_SSH_KEY_PUB}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_rsa
+${GATEWAY_SSH_KEY}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_rsa.pub
+${GATEWAY_SSH_KEY_PUB}
+EOF

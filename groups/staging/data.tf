@@ -50,6 +50,19 @@ data "vault_generic_secret" "bulk_gateway_shares_data" {
   path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/shares"
 }
 
+data "vault_generic_secret" "bulk_gateway_github_deploy_key_data" {
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/github-deploy"
+}
+
+data "vault_generic_secret" "bulk_gateway_e5_ssh_key_data" {
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/github-deploy"
+}
+
+data "vault_generic_secret" "bulk_gateway_gateway_ssh_key_data" {
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/github-deploy"
+}
+
+
 data "aws_ami" "bulk_gateway" {
   most_recent = true
   owners      = [data.vault_generic_secret.account_ids.data["development"]]
@@ -77,6 +90,11 @@ data "template_file" "bulk_gateway_userdata" {
     ANSIBLE_INPUTS       = jsonencode(local.bulk_gateway_ansible_inputs)
     HERITAGE_ENVIRONMENT = title(var.environment)
     BULK_GATEWAY_INPUTS  = local.bulk_gateway_shares_data["share-mounts"]
+    GITHUB_DEPLOY_KEY    = local.bulk_gateway_github_deploy_key_data["private-key"]
+    E5_SSH_KEY           = local.bulk_gateway_e5_ssh_key_data["private-key"]
+    E5_SSH_KEY_PUB       = local.bulk_gateway_e5_ssh_key_data["public-key"]
+    GATEWAY_SSH_KEY      = local.bulk_gateway_gateway_ssh_key_data["private-key"]
+    GATEWAY_SSH_KEY_PUB  = local.bulk_gateway_gateway_ssh_key_data["public-key"]
   }
 }
 
