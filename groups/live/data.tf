@@ -63,11 +63,15 @@ data "vault_generic_secret" "bulk_gateway_github_deploy_key_data" {
 }
 
 data "vault_generic_secret" "bulk_gateway_e5_ssh_key_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/github-deploy"
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/e5-ssh"
 }
 
 data "vault_generic_secret" "bulk_gateway_gateway_ssh_key_data" {
-  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/github-deploy"
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/gateway-ssh"
+}
+
+data "vault_generic_secret" "bulk_gateway_kms_key_data" {
+  path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/bulk-kms-key"
 }
 
 data "aws_ami" "bulk_gateway" {
@@ -102,6 +106,7 @@ data "template_file" "bulk_gateway_userdata" {
     E5_SSH_KEY_PUB       = local.bulk_gateway_e5_ssh_key_data["public-key"]
     GATEWAY_SSH_KEY      = local.bulk_gateway_gateway_ssh_key_data["private-key"]
     GATEWAY_SSH_KEY_PUB  = local.bulk_gateway_gateway_ssh_key_data["public-key"]
+    BULKLIVE_KMS_KEY     = local.bulk_gateway_kms_key_data["key"]
   }
 }
 

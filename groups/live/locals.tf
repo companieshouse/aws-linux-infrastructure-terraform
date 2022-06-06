@@ -30,6 +30,7 @@ locals {
   bulk_gateway_github_deploy_key_data = data.vault_generic_secret.bulk_gateway_github_deploy_key_data.data
   bulk_gateway_e5_ssh_key_data = data.vault_generic_secret.bulk_gateway_e5_ssh_key_data.data
   bulk_gateway_gateway_ssh_key_data = data.vault_generic_secret.bulk_gateway_gateway_ssh_key_data.data
+  bulk_gateway_kms_key_data = data.vault_generic_secret.bulk_gateway_kms_key_data.data
 
   #For each log map passed, add an extra kv for the log group name
   bulk_gateway_cw_logs    = { for log, map in var.bulk_gateway_cw_logs : log => merge(map, { "log_group_name" = "${var.category}-${var.bulk_gateway_application}-${log}" }) }
