@@ -81,45 +81,12 @@ mkdir -p /batenvp1rep/archive
 chmod 777 /batenvp1rep/archive
 chown batenvp1rep:batch /batenvp1rep/archive
 
-#Create /home/bulk-live/bin dir and permissions & ownership
-mkdir -p /home/bulk-live/bin
-chmod 777 /home/bulk-live/bin
-chown bulk-live:bulk-live /home/bulk-live/bin
-
-#Create /home/gateway/bin dir and permissions & ownership
-mkdir -p /home/gateway/bin
-chmod 775 /home/gateway/bin
-chown gateway:gateway /home/gateway/bin
-
-#Create /home/gateway/bin/gazette dir and permissions & ownership
-mkdir -p /home/gateway/bin/gazette
-chmod 775 /home/gateway/bin/gazette
-chown gateway:gateway /home/gateway/bin/gazette
-
-#Create /home/gateway/bin/letters dir and permissions & ownership
-mkdir -p /home/gateway/bin/letters
-chmod 775 /home/gateway/bin/letters
-chown gateway:gateway /home/gateway/bin/letters
-
-#Create /home/gateway/bin/returnedmail dir and permissions & ownership
-mkdir -p /home/gateway/bin/returnedmail
-chmod 775 /home/gateway/bin/returnedmail
-chown gateway:gateway /home/gateway/bin/returnedmail
-
-#Create /home/gateway/bin/authcode dir and permissions & ownership
-mkdir -p /home/gateway/bin/authcode
-chmod 775 /home/gateway/bin/authcode
-chown gateway:gateway /home/gateway/bin/authcode
-
-#Create /home/gateway/bin/eshu dir and permissions & ownership
-mkdir -p /home/gateway/bin/eshu
-chmod 775 /home/gateway/bin/eshu
-chown gateway:gateway /home/gateway/bin/eshu
-
-#Create /home/gateway/bin/lfp_sage_files dir and permissions & ownership
-mkdir -p /home/gateway/bin/lfp_sage_files
-chmod 775 /home/gateway/bin/lfp_sage_files
-chown gateway:gateway /home/gateway/bin/lfp_sage_files
+#Copy Github deploy key from vault
+touch /root/.ssh/id_ed25519
+chmod 600 /root/.ssh/id_ed25519
+cat <<EOF >> /root/.ssh/id_ed25519
+${GITHUB_DEPLOY_KEY}
+EOF
 
 #Script that copies deployment scripts from Git repo
 touch /root/script_deploy.sh
@@ -130,22 +97,10 @@ cat <<EOF >> /root/script_deploy.sh
 
 #Clone from GitHub repo
 pushd /tmp
-git clone git@github.com:companieshouse/chips-service-admin.git
+GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@github.com:companieshouse/chips-service-admin.git
+chmod +x /tmp/chips-service-admin/scripts/bulk-outputs/bootstrap.sh
+/tmp/chips-service-admin/scripts/bulk-outputs/bootstrap.sh
 
-#Copy script to relevant paths
-cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gateway/* /home/bulk-live/bin/
-cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/gazette/* /home/gateway/bin/gazette/
-cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/letters/* /home/gateway/bin/letters/
-cp -pr /tmp/chips-service-admin/scripts/bulk-outputs/returnedmail/* /home/gateway/bin/returnedmail/
-
-#Update ownership after scripts deployment
-chown -R bulk-live:bulk-live /home/bulk-live/bin/
-chown -R gateway:gateway /home/gateway/bin/gazette/
-chown -R gateway:gateway /home/gateway/bin/letters/
-chown -R gateway:gateway /home/gateway/bin/returnedmail/
-
-#Remove cloned GitHub repo
-rm -rf /tmp/chips-service-admin
 EOF
 
 #Copy /etc/fstab share info from vault
@@ -166,4 +121,33 @@ systemctl restart postfix
 
 #Allow user to use cron
 echo bulk-live >> /etc/cron.allow
-echo bulk-gateway >> /etc/cron.allow
+echo gateway >> /etc/cron.allow
+
+#Setup SSH keys
+mkdir -p /home/gateway/.ssh/
+chown gateway:gateway /home/gateway/.ssh/
+chmod 700 /home/gateway/.ssh/
+touch /home/gateway/.ssh/id_e5ftp_rsa
+touch /home/gateway/.ssh/id_e5ftp_rsa.pub
+touch /home/gateway/.ssh/id_rsa
+touch /home/gateway/.ssh/id_rsa.pub
+chown gateway:gateway /home/gateway/.ssh/id_e5ftp_rsa
+chown gateway:gateway /home/gateway/.ssh/id_e5ftp_rsa.pub
+chown gateway:gateway /home/gateway/.ssh/id_rsa
+chown gateway:gateway /home/gateway/.ssh/id_rsa.pub
+chmod 600 /home/gateway/.ssh/id_e5ftp_rsa
+chmod 600 /home/gateway/.ssh/id_e5ftp_rsa.pub
+chmod 600 /home/gateway/.ssh/id_rsa
+chmod 600 /home/gateway/.ssh/id_rsa.pub
+cat <<EOF >> /home/gateway/.ssh/id_e5ftp_rsa
+${E5_SSH_KEY}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_e5ftp_rsa.pub
+${E5_SSH_KEY_PUB}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_rsa
+${GATEWAY_SSH_KEY}
+EOF
+cat <<EOF >> /home/gateway/.ssh/id_rsa.pub
+${GATEWAY_SSH_KEY_PUB}
+EOF
