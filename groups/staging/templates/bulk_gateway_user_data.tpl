@@ -155,3 +155,14 @@ EOF
 cat <<EOF >> /home/gateway/.ssh/id_rsa.pub
 ${GATEWAY_SSH_KEY_PUB}
 EOF
+
+#Setup vault sourced environment variables
+touch /etc/profile.d/vault_env.sh
+chmod 644 /etc/profile.d/vault_env.sh
+cat <<EOF >> /etc/profile.d/vault_env.sh
+BULKLIVE_S3_KMS_KEY="${BULKLIVE_KMS_KEY}"
+export BULKLIVE_S3_KMS_KEY
+EOF
+
+#Call script_deploy
+/root/script_deploy.sh
