@@ -97,7 +97,9 @@ cat <<EOF >> /root/script_deploy.sh
 
 #Clone from GitHub repo
 pushd /tmp
+rm -rf /tmp/chips-service-admin
 GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@github.com:companieshouse/chips-service-admin.git
+cd /tmp/chips-service-admin && git restore-mtime
 chmod +x /tmp/chips-service-admin/scripts/bulk-outputs/bootstrap.sh
 /tmp/chips-service-admin/scripts/bulk-outputs/bootstrap.sh
 
@@ -116,6 +118,9 @@ yum install -y mailx
 
 #Install dos2unix
 yum install -y dos2unix
+
+#Install git-tools
+yum install -y git-tools
 
 #Configure postfix to use AWS Shared Services mail relay
 sed -i 's/#mydomain = domain.tld/mydomain = companieshouse.gov.uk/g' /etc/postfix/main.cf
@@ -154,6 +159,39 @@ ${GATEWAY_SSH_KEY}
 EOF
 cat <<EOF >> /home/gateway/.ssh/id_rsa.pub
 ${GATEWAY_SSH_KEY_PUB}
+EOF
+
+#Set up AWS CLI
+mkdir -p /home/bulk-live/.aws/
+chown bulk-live:bulk-live /home/bulk-live/.aws/
+chmod 755 /home/bulk-live/.aws/
+touch /home/bulk-live/.aws/config
+touch /home/bulk-live/.aws/credentials
+chown bulk-live:bulk-live /home/bulk-live/.aws/config
+chown bulk-live:bulk-live /home/bulk-live/.aws/credentials
+chmod 600 /home/bulk-live/.aws/config
+chmod 600 /home/bulk-live/.aws/credentials
+cat <<EOF >> /home/bulk-live/.aws/config
+${BULK_LIVE_DOT_AWS_CONFIG}
+EOF
+cat <<EOF >> /home/bulk-live/.aws/credentials
+${BULK_LIVE_DOT_AWS_CREDENTIALS}
+EOF
+#Set up AWS CLI
+mkdir -p /home/gateway/.aws/
+chown gateway:gateway /home/gateway/.aws/
+chmod 755 /home/gateway/.aws/
+touch /home/gateway/.aws/config
+touch /home/gateway/.aws/credentials
+chown gateway:gateway /home/gateway/.aws/config
+chown gateway:gateway /home/gateway/.aws/credentials
+chmod 600 /home/gateway/.aws/config
+chmod 600 /home/gateway/.aws/credentials
+cat <<EOF >> /home/gateway/.aws/config
+${GATEWAY_DOT_AWS_CONFIG}
+EOF
+cat <<EOF >> /home/gateway/.aws/credentials
+${GATEWAY_DOT_AWS_CREDENTIALS}
 EOF
 
 #Setup vault sourced environment variables
