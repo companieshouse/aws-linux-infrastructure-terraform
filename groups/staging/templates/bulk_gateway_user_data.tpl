@@ -203,4 +203,5 @@ export BULKLIVE_S3_KMS_KEY
 EOF
 
 #Call script_deploy
+source /etc/profile.d/vault_env.sh
 /root/script_deploy.sh
