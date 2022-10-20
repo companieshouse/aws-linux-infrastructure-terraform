@@ -74,11 +74,11 @@ data "vault_generic_secret" "bulk_gateway_kms_key_data" {
   path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/bulk-kms-key"
 }
 
-data "vault_generic_secret" "bulk_gateway_bulk_live_dot_aws" {
+data "vault_generic_secret" "bulk_gateway_bulk_live_dot_aws_data" {
   path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/bulk-live-dot-aws"
 }
 
-data "vault_generic_secret" "bulk_gateway_gateway_dot_aws" {
+data "vault_generic_secret" "bulk_gateway_gateway_dot_aws_data" {
   path = "applications/${var.aws_account}-${var.aws_region}/bulk-gateway/bulk-gw-lx/gateway-dot-aws"
 }
 
