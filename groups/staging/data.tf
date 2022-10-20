@@ -66,6 +66,15 @@ data "vault_generic_secret" "bulk_gateway_kms_key_data" {
   path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/bulk-kms-key"
 }
 
+data "vault_generic_secret" "bulk_gateway_bulk_live_dot_aws" {
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/bulk-live-dot-aws"
+}
+
+data "vault_generic_secret" "bulk_gateway_gateway_dot_aws" {
+  path = "applications/${var.aws_account}-${var.aws_region}/${var.bulk_gateway_application}/bulk-gw-lx/gateway-dot-aws"
+}
+
+
 data "aws_ami" "bulk_gateway" {
   most_recent = true
   owners      = [data.vault_generic_secret.account_ids.data["development"]]
@@ -99,6 +108,10 @@ data "template_file" "bulk_gateway_userdata" {
     GATEWAY_SSH_KEY      = local.bulk_gateway_gateway_ssh_key_data["private-key"]
     GATEWAY_SSH_KEY_PUB  = local.bulk_gateway_gateway_ssh_key_data["public-key"]
     BULKLIVE_KMS_KEY     = local.bulk_gateway_kms_key_data["key"]
+    BULK_LIVE_DOT_AWS_CONFIG      = local.bulk_gateway_bulk_live_dot_aws_data["config"]
+    BULK_LIVE_DOT_AWS_CREDENTIALS = local.bulk_gateway_bulk_live_dot_aws_data["credentials"]
+    GATEWAY_DOT_AWS_CONFIG        = local.bulk_gateway_gateway_dot_aws_data["config"]
+    GATEWAY_DOT_AWS_CREDENTIALS   = local.bulk_gateway_gateway_dot_aws_data["credentials"]
   }
 }
 
