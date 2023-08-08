@@ -114,36 +114,6 @@ variable "volume_type" {
 }
 
 # ------------------------------------------------------------------------------
-# jfil Server Variables
-# ------------------------------------------------------------------------------
-
-variable "jfil_application" {
-  description = "EC2 application description"
-  type        = string
-}
-
-variable "jfil_ec2_name" {
-  description = "EC2 instance name"
-  type        = string
-}
-
-variable "jfil_ec2_instance_type" {
-  type        = string
-  description = "The size of the EC2 instance"
-}
-
-variable "jfil_ami" {
-  type        = string
-  description = "ID of the AMI to use for instance"
-}
-
-variable "jfil_cw_logs" {
-  type        = map(any)
-  description = "Map of log file information; used to create log groups, IAM permissions and passed to the application to configure remote logging"
-  default     = {}
-}
-
-# ------------------------------------------------------------------------------
 # Bulk Gateway Server Variables
 # ------------------------------------------------------------------------------
 
