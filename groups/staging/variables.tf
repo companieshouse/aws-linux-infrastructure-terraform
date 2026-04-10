@@ -60,7 +60,7 @@ variable "category" {
 variable "ServiceTeam" {
   type        = string
   description = "The service team that supports the application"
-  default     = "linux-support"
+  default     = "CSI"
 }
 
 variable "default_log_group_retention_in_days" {
