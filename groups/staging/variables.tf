@@ -153,3 +153,5 @@ variable "cloudwatch_namespace" {
   default     = null
   description = "A custom namespace to define for CloudWatch custom metrics such as CPU"
 }
+
+# tigger pipeline
