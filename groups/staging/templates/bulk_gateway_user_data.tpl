@@ -113,6 +113,9 @@ EOF
 #Mount shares
 mount -a
 
+#Install 7-zip
+yum install -y p7zip*
+
 #Install Malix
 yum install -y mailx
 
